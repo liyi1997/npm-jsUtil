@@ -92,10 +92,10 @@ export function operate(a, b, option) {
  * @param  {string} str       格式的符号 (-,.cn) 传cn时间就为YY年mm月dd日
  * @return {string}           格式化的时间字符串
  */
-export function getTime(format, timestamp, str) {
+export function getTime(format, timestamp, str = '-') {
   let a,
     jsdate = timestamp ? new Date(timestamp * 1000) : new Date();
-  let pad = function (n, c) {
+  let pad = (n, c) => {
     if ((n = n + '').length < c) {
       return new Array(++c - n.length).join('0') + n;
     } else {
@@ -107,33 +107,33 @@ export function getTime(format, timestamp, str) {
   let txt_months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   let f = {
     // Day
-    d: function () {
+    d: () => {
       return pad(f.j(), 2);
     },
-    D: function () {
+    D: () => {
       return f.l().substr(0, 3);
     },
-    j: function () {
+    j: () => {
       return jsdate.getDate();
     },
-    l: function () {
+    l: () => {
       return txt_weekdays[f.w()];
     },
-    N: function () {
+    N: () => {
       return f.w() + 1;
     },
-    S: function () {
+    S: () => {
       return txt_ordin[f.j()] ? txt_ordin[f.j()] : 'th';
     },
-    w: function () {
+    w: () => {
       return jsdate.getDay();
     },
-    z: function () {
+    z: () => {
       return ((jsdate - new Date(jsdate.getFullYear() + '/1/1')) / 864e5) >> 0;
     },
 
     // Week
-    W: function () {
+    W: () => {
       let a = f.z(),
         b = 364 + f.L() - a;
       let nd2,
@@ -151,19 +151,19 @@ export function getTime(format, timestamp, str) {
     },
 
     // Month
-    F: function () {
+    F: () => {
       return txt_months[f.n()];
     },
-    m: function () {
+    m: () => {
       return pad(f.n(), 2);
     },
-    M: function () {
+    M: () => {
       return f.F().substr(0, 3);
     },
-    n: function () {
+    n: () => {
       return jsdate.getMonth() + 1;
     },
-    t: function () {
+    t: () => {
       let n;
       if ((n = jsdate.getMonth() + 1) == 2) {
         return 28 + f.L();
@@ -177,26 +177,26 @@ export function getTime(format, timestamp, str) {
     },
 
     // Year
-    L: function () {
+    L: () => {
       let y = f.Y();
       return !(y & 3) && (y % 1e2 || !(y % 4e2)) ? 1 : 0;
     },
     //o not supported yet
-    Y: function () {
+    Y: () => {
       return jsdate.getFullYear();
     },
-    y: function () {
+    y: () => {
       return (jsdate.getFullYear() + '').slice(2);
     },
 
     // Time
-    a: function () {
+    a: () => {
       return jsdate.getHours() > 11 ? 'pm' : 'am';
     },
-    A: function () {
+    A: () => {
       return f.a().toUpperCase();
     },
-    B: function () {
+    B: () => {
       // peter paul koch:
       let off = (jsdate.getTimezoneOffset() + 60) * 60;
       let theSeconds = jsdate.getHours() * 3600 + jsdate.getMinutes() * 60 + jsdate.getSeconds() + off;
@@ -207,42 +207,42 @@ export function getTime(format, timestamp, str) {
       if (String(beat).length == 2) beat = '0' + beat;
       return beat;
     },
-    g: function () {
+    g: () => {
       return jsdate.getHours() % 12 || 12;
     },
-    G: function () {
+    G: () => {
       return jsdate.getHours();
     },
-    h: function () {
+    h: () => {
       return pad(f.g(), 2);
     },
-    H: function () {
+    H: () => {
       return pad(jsdate.getHours(), 2);
     },
-    i: function () {
+    i: () => {
       return pad(jsdate.getMinutes(), 2);
     },
-    s: function () {
+    s: () => {
       return pad(jsdate.getSeconds(), 2);
     },
-    O: function () {
+    O: () => {
       let t = pad(Math.abs((jsdate.getTimezoneOffset() / 60) * 100), 4);
       if (jsdate.getTimezoneOffset() > 0) t = '-' + t;
       else t = '+' + t;
       return t;
     },
-    P: function () {
+    P: () => {
       let O = f.O();
       return O.substr(0, 3) + ':' + O.substr(3, 2);
     },
-    c: function () {
+    c: () => {
       return f.Y() + `-` + f.m() + `-` + f.d() + 'T' + f.h() + ':' + f.i() + ':' + f.s() + f.P();
     },
-    U: function () {
+    U: () => {
       return Math.round(jsdate.getTime() / 1000);
     },
   };
-  format = format.replace(/([a-zA-Z])/g, function (t, s) {
+  format = format.replace(/([a-zA-Z])/g, (t, s) => {
     if (t != s) {
       // escaped
       ret = s;

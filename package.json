@@ -1,0 +1,14 @@
+{
+  "name": "ly-js-util",
+  "version": "0.0.6",
+  "description": "js自用方法封装",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ly",
+  "license": "MIT",
+  "files": [
+    "Readme.md"
+  ]
+}
